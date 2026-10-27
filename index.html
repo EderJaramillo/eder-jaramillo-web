@@ -1,0 +1,661 @@
+<title>Eder Jaramillo Video Unido</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: bandas de color a todo el ancho, como escenas de una película.
+   Naranja para abrir y cerrar (cuenta regresiva y contacto), papel para leer, tinta para el video.
+   Los tres proyectos van como un índice de filas grandes, no como tarjetas. */
+:root {
+  --paper: #ecefe9;
+  --ink: #0f1d1c;
+  --muted: #4a5f5c;
+  --soft: #dde3dc;
+  --rule: #b9c4be;
+  --teal: #0e5c5a;
+  --at-l: #c63d0a;
+  --at-d: #ff7a45;
+  --accent-text: var(--at-l);
+  --hot: #ff5a1f;
+  --hot-ink: #0f1d1c;
+  --hot-paper: #ecefe9;
+  --band: #0f1d1c;
+  --band-fg: #ecefe9;
+  --band-muted: #9db3b0;
+  --band-line: #2c4442;
+  --font-display: "Archivo", "Arial Black", Impact, sans-serif;
+  --font-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1615;
+    --ink: #ecefe9;
+    --muted: #9db3b0;
+    --soft: #14211f;
+    --rule: #2f4a47;
+    --teal: #4fc0b8;
+    --accent-text: var(--at-d);
+    --band: #050b0a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1615;
+  --ink: #ecefe9;
+  --muted: #9db3b0;
+  --soft: #14211f;
+  --rule: #2f4a47;
+  --teal: #4fc0b8;
+  --accent-text: var(--at-d);
+  --band: #050b0a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; }
+
+.band {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(56px, 10vw, 110px);
+}
+.inner { max-width: 1120px; margin: 0 auto; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+h2 { font-size: clamp(2rem, 6.4vw, 4rem); }
+h3 { font-size: 1.5rem; }
+p { margin: 0; max-width: 62ch; }
+.lead { font-size: clamp(1.1rem, 2.6vw, 1.32rem); }
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.stack { display: grid; gap: 20px; }
+.about.has-photo { align-items: start; }
+.about.has-photo .stack { align-content: start; gap: 18px; }
+.about.has-photo .stack .lead { font-size: clamp(1.15rem, 2.2vw, 1.45rem); line-height: 1.4; }
+.portrait { margin: 0; display: grid; gap: 10px; align-content: start; }
+.portrait img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+.portrait figcaption { color: var(--muted); }
+@media (min-width: 820px) { .portrait { max-width: 100%; } }
+@media (min-width: 1000px) { .about.has-photo { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; } }
+@media (min-width: 820px) and (max-width: 999px) { .about.has-photo { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } .about.has-photo dl { grid-column: 1 / -1; } }
+@media (max-width: 819px) { .portrait { max-width: 320px; } }
+
+.btn {
+  display: inline-block; text-decoration: none; font-weight: 700;
+  padding: 14px 22px; background: var(--ink); color: var(--paper);
+  border: 2px solid var(--ink);
+  transition: transform 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.line { background: transparent; color: inherit; border-color: currentColor; }
+.btn.on-hot { background: var(--hot-ink); color: var(--hot-paper); border-color: var(--hot-ink); }
+.btn.on-hot.line { background: transparent; color: var(--hot-ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+/* HERO */
+.hero { background: var(--hot); color: var(--hot-ink); padding-block: clamp(28px, 6vw, 64px) clamp(48px, 8vw, 96px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
+@media (min-width: 860px) { .hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 48px; } }
+.hero .mono { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.title-col { container-type: inline-size; min-width: 0; }
+.hero h1 {
+  font-size: min(11.5cqw, 7.6rem);
+  font-weight: 900; margin-top: 24px;
+  overflow-wrap: normal; text-wrap: nowrap;
+}
+.hero h1 span { display: block; white-space: nowrap; }
+.hero .lead { margin-top: 26px; max-width: 34ch; font-weight: 500; }
+.leader { width: min(380px, 78%); justify-self: center; color: var(--hot-ink); }
+@media (min-width: 860px) { .leader { width: 100%; justify-self: end; } }
+.leader svg { display: block; width: 100%; height: auto; }
+
+/* LO QUE HAGO */
+.rows {
+  margin-top: 28px; border-top: 3px solid var(--ink);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0;
+}
+.row {
+  display: grid; gap: 12px; align-content: start; min-width: 0;
+  padding: 24px 20px 28px 0; text-decoration: none; color: inherit;
+}
+.row + .row { border-left: 1px solid var(--rule); padding-left: 20px; }
+@media (max-width: 620px) {
+  .row + .row { border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; }
+}
+.row h3 { font-size: clamp(1.9rem, 4.4vw, 3rem); overflow-wrap: normal; }
+.row p { color: var(--muted); max-width: 52ch; }
+.row .arrow { font-family: var(--font-mono); font-size: 1.8rem; transition: transform 0.2s ease; }
+a.row:hover h3 { color: var(--accent-text); }
+a.row:hover .arrow { transform: translateX(6px); }
+.row.soon { cursor: default; }
+.row.soon h3 { color: var(--muted); }
+.tag {
+  grid-column: 1; justify-self: start; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 3px 8px; border: 1px dashed var(--teal); color: var(--teal);
+}
+
+/* QUIÉN SOY */
+.about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 36px; }
+@media (min-width: 820px) { .about { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; } }
+dl { margin: 0; display: grid; gap: 0; border-top: 3px solid var(--ink); align-self: start; }
+dl > div { padding: 16px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); gap: 4px 16px; }
+dt { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); padding-top: 3px; }
+dd { margin: 0; }
+@media (max-width: 520px) { dl > div { grid-template-columns: minmax(0, 1fr); } }
+
+/* PASIÓN */
+.passion { background: var(--band); color: var(--band-fg); }
+.passion .mono { color: var(--band-muted); }
+.giant {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 900; text-transform: uppercase;
+  font-size: clamp(4.6rem, 25vw, 17rem); line-height: 0.8; letter-spacing: -0.03em;
+  color: transparent; -webkit-text-stroke: 2px var(--hot); margin: 14px 0 0; overflow-wrap: anywhere;
+}
+.passion .quote {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(1.5rem, 4.6vw, 2.5rem); line-height: 1.05; max-width: 24ch; margin-top: 40px; color: var(--hot);
+}
+.passion .stack { margin-top: 28px; }
+.reel {
+  margin-top: 48px; display: flex; gap: 10px; overflow-x: auto; padding-block: 26px; scrollbar-width: thin;
+  background:
+    repeating-linear-gradient(90deg, var(--band-line) 0 10px, transparent 10px 24px) top 8px left 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(90deg, var(--band-line) 0 10px, transparent 10px 24px) bottom 8px left 0 / 100% 8px no-repeat;
+}
+.reel div { flex: 0 0 150px; aspect-ratio: 4 / 5; }
+.credits { margin: 44px 0 0; padding: 0; border-top: 1px solid var(--band-line); }
+.credits li {
+  list-style: none; display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 4px 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--band-line); align-items: baseline;
+}
+.credits b { font-weight: 600; }
+.passion .btn { background: var(--band-fg); color: var(--band); border-color: var(--band-fg); }
+
+/* VENTA: VIDEO */
+.reasons { margin-top: 40px; display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+.reason { flex: 1 1 0; border-top: 3px solid var(--ink); padding-top: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.reason h3 { font-size: 1.3rem; overflow-wrap: normal; }
+.reason p { color: var(--muted); font-size: 0.97rem; }
+.step { color: var(--accent-text); }
+.next {
+  flex: 0 0 auto; align-self: center; font-family: var(--font-mono); font-size: 2rem; line-height: 1;
+  color: var(--accent-text); transform: rotate(90deg); padding: 4px 0;
+}
+@media (min-width: 900px) {
+  .reasons { flex-direction: row; align-items: flex-start; gap: 14px; }
+  .next { align-self: flex-start; transform: none; padding: 18px 0 0; }
+}
+
+/* VENTA: REDES */
+.social { background: var(--soft); }
+.checks { margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 40px; }
+.checks li { list-style: none; padding: 16px 0 16px 34px; border-bottom: 1px solid var(--rule); position: relative; }
+.checks li::before { content: ""; position: absolute; left: 0; top: 24px; width: 16px; height: 16px; background: var(--hot); }
+.checks b { display: block; }
+.checks span { color: var(--muted); font-size: 0.96rem; }
+.note { margin-top: 32px; padding: 20px 22px; border: 2px solid var(--ink); max-width: 62ch; font-weight: 500; }
+
+/* CONTACTO */
+.contact { background: var(--hot); color: var(--hot-ink); }
+.contact .inner { container-type: inline-size; }
+.contact h2 {
+  font-size: min(12cqw, 9rem); font-weight: 900; line-height: 0.9; margin-top: 16px;
+  white-space: nowrap; overflow-wrap: normal; text-wrap: nowrap;
+}
+
+/* WEB DESIGN */
+.web { background: var(--soft); }
+.web .about { margin-top: 36px; }
+.tech { margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.tech li {
+  list-style: none; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 12px; border: 1.5px solid var(--ink);
+}
+.web .btn { margin-top: 4px; justify-self: start; }
+.contact .lead { margin-top: 28px; max-width: 40ch; font-weight: 500; }
+
+footer {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px;
+}
+footer .inner { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; color: var(--muted); }
+
+
+
+/* Altura del menú fija, para que los enlaces no queden tapados */
+:root { --hdr: 97px; }
+@media (min-width: 900px) { :root { --hdr: 59px; } }
+html { scroll-padding-top: var(--hdr); }
+
+/* Menú superior */
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--paper);
+}
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.topbar-in {
+  max-width: 1120px; margin: 0 auto; padding-block: 10px;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; align-items: center;
+}
+.welcome { display: grid; min-width: 0; line-height: 1.2; }
+.welcome .mono { color: var(--muted); font-size: 0.7rem; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.welcome b { font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase; font-size: 1.05rem; overflow-wrap: normal; white-space: nowrap; }
+.menu {
+  grid-column: 1 / -1; grid-row: 2; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  margin-inline: -4px; padding-bottom: 2px;
+}
+.menu::-webkit-scrollbar { display: none; }
+.menu a {
+  flex: 0 0 auto; text-decoration: none; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 8px 10px; border-bottom: 3px solid transparent; color: var(--muted);
+}
+.menu a:hover { color: var(--ink); }
+.menu a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--hot); }
+.tools { display: flex; align-items: center; gap: 12px; grid-column: 2; grid-row: 1; }
+.mode {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; color: var(--ink); border: 1.5px solid var(--ink); padding: 6px 10px;
+}
+.mode svg { width: 14px; height: 14px; }
+.mode:hover { background: var(--ink); color: var(--paper); }
+@media (min-width: 900px) {
+  .topbar-in { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .menu { grid-column: 2; grid-row: 1; justify-content: center; margin: 0; padding: 0; }
+  .tools { grid-column: 3; }
+}
+@media (max-width: 420px) { .mode span { display: none; } }
+
+/* Sección de video: palabra más pequeña y texto en dos columnas alineadas */
+.giant { font-size: clamp(3.6rem, 15vw, 8.5rem); margin-top: 8px; }
+.passion p { max-width: none; }
+.p-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 0; align-items: start;
+  margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--band-line);
+}
+.p-grid .quote { margin-top: 0; max-width: none; line-height: 1.05; text-box: trim-start cap alphabetic; }
+.p-grid .stack { margin-top: 0; }
+.p-grid .stack > p:first-child { text-box: trim-start cap alphabetic; }
+@media (min-width: 860px) {
+  .p-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .p-grid .quote { padding-right: 48px; }
+  .p-grid .stack { border-left: 1px solid var(--band-line); padding-left: 48px; }
+}
+
+/* Primera pantalla dividida: portada arriba, proyectos abajo */
+.first { min-height: calc(100svh - var(--hdr)); display: flex; flex-direction: column; }
+.half {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.hero { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; padding-block: clamp(24px, 4vw, 48px); }
+.hero .inner { width: 100%; }
+.hero h1 { margin-top: 14px; }
+.hero .lead { margin-top: 16px; }
+.leader { width: auto; height: min(34svh, 300px); aspect-ratio: 1 / 1; justify-self: end; }
+.leader svg { width: 100%; height: 100%; }
+.services { flex: 0 0 auto; padding-block: 22px 26px; }
+.services .inner { width: 100%; }
+.services .rows { margin-top: 12px; }
+.services .row { padding-block: 16px 4px; gap: 8px; }
+@media (max-width: 859px) { .leader { display: none; } }
+@media (max-width: 620px) {
+  .services .row { padding-block: 12px 12px; gap: 4px; }
+  .services .row p { font-size: 0.92rem; }
+}
+
+/* Sección de video: todo cabe en una pantalla */
+.passion { padding-block: clamp(20px, 3.5svh, 40px); }
+.giant { font-size: clamp(3rem, min(12vw, 15svh), 8rem); margin-top: 4px; }
+.p-grid { margin-top: clamp(12px, 2.2svh, 24px); padding-top: clamp(12px, 2.2svh, 24px); }
+.p-grid .quote { font-size: clamp(1.25rem, min(3.4vw, 4svh), 2.1rem); }
+.p-grid .stack { gap: 14px; }
+.p-grid .lead { font-size: clamp(1rem, min(1.6vw, 2.5svh), 1.2rem); line-height: 1.5; }
+.p-grid .stack p:not(.lead) { font-size: clamp(0.88rem, 2svh, 1rem); line-height: 1.5; }
+.reel-row { display: block; margin-top: clamp(10px, 2svh, 22px); }
+.reel-row .reel { margin-top: 0; padding-block: 18px; }
+.reel-row .reel div { flex: 0 0 auto; height: clamp(80px, 14svh, 150px); aspect-ratio: 4 / 5; }
+.reel-row .actions { margin-top: clamp(8px, 1.6svh, 16px); }
+
+/* Video y "por qué tu negocio necesita video" en una sola sección */
+.why { margin-top: clamp(28px, 5svh, 56px); padding-top: clamp(24px, 4svh, 44px); border-top: 1px solid var(--band-line); }
+.passion .why .mono { color: var(--band-muted); }
+.passion .reason { border-top-color: var(--band-fg); }
+.passion .reason h3 { color: var(--band-fg); }
+.passion .reason p { color: var(--band-muted); }
+.passion .step, .passion .next { color: var(--hot); }
+
+/* Video: gancho corto y contenido que se despliega */
+.more-btn { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font: inherit; font-weight: 700; }
+.more-btn svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+.more-btn:hover svg { transform: translateX(4px); }
+.passion > .inner > .actions { margin-top: clamp(16px, 3svh, 28px); }
+.more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s ease; }
+.more.open { grid-template-rows: 1fr; }
+.more-in { min-height: 0; overflow: hidden; }
+.more-body { padding-top: clamp(28px, 5svh, 56px); display: grid; gap: clamp(32px, 6svh, 64px); }
+.blk { border-top: 1px solid var(--band-line); padding-top: clamp(20px, 3.5svh, 36px); display: grid; gap: 16px; align-content: start; }
+.blk h2 { font-size: clamp(1.6rem, 4.4vw, 2.8rem); }
+.blk > .mono { color: var(--band-muted); }
+.clips { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 8px; }
+.clip { margin: 0; min-width: 0; }
+.frame { position: relative; aspect-ratio: 16 / 9; width: 100%; }
+.play {
+  position: absolute; inset: 0; margin: auto; width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--band-fg); color: var(--band);
+}
+.play svg { width: 18px; height: 18px; margin-left: 2px; }
+.clip figcaption { display: grid; gap: 2px; padding-top: 10px; }
+.clip figcaption .mono { color: var(--band-muted); }
+.p-grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 56px; }
+.p-grid2 p { max-width: none; }
+@media (min-width: 860px) { .p-grid2 { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+.passion .checks li { border-bottom-color: var(--band-line); }
+.passion .checks span { color: var(--band-muted); }
+.passion .blk .actions { margin-top: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .more, .more-btn svg { transition: none; }
+}
+
+/* Cinta de video infinita */
+.filmstrip {
+  margin-top: clamp(14px, 2.6svh, 26px); overflow: hidden; padding-block: 22px;
+  background:
+    repeating-linear-gradient(90deg, var(--band-line) 0 10px, transparent 10px 24px) top 8px left 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(90deg, var(--band-line) 0 10px, transparent 10px 24px) bottom 8px left 0 / 100% 8px no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.film { display: flex; width: max-content; animation: film 50s linear infinite; }
+.film-g { display: flex; gap: 10px; padding-right: 10px; }
+.film-g img { flex: 0 0 auto; display: block; height: clamp(80px, 13svh, 130px); aspect-ratio: 4 / 5; object-fit: cover; }
+@keyframes film { to { transform: translateX(-25%); } }
+@media (prefers-reduced-motion: reduce) {
+  .film { animation: none; }
+  .filmstrip { overflow-x: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .row .arrow { transition: none; }
+}
+</style>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="welcome">
+      <span class="mono" id="saludo">Bienvenido</span>
+    </div>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#inicio">Inicio</a>
+      <a href="#quien-soy">Por qué yo</a>
+      <a href="#pasion">Video</a>
+      <a href="#redes">Redes</a>
+      <a href="#web-design">Web Design</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="tools">
+      <button class="mode" id="modo" type="button" aria-label="Cambiar entre modo claro y oscuro">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.8A6.2 6.2 0 0 1 8 14.2Z" fill="currentColor"/></svg>
+        <span id="modo-txt">Oscuro</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="first" id="inicio">
+<div class="half hero">
+  <div class="inner hero-grid">
+    <div class="title-col">
+      <p class="mono"><span>Video · Diseño · Web</span><span>Ameca, Jalisco</span></p>
+      <h1><span>Eder</span><span>Jaramillo</span></h1>
+      <p class="lead">Videos, diseño y páginas web para que tu negocio se vea profesional y atraiga más clientes.</p>
+    </div>
+    <div class="leader" aria-hidden="true">
+      <svg viewBox="0 0 400 400">
+        <g fill="none" stroke="currentColor">
+          <circle cx="200" cy="200" r="184" stroke-width="7"/>
+          <circle cx="200" cy="200" r="128" stroke-width="3"/>
+          <path d="M200 6V394M6 200H394" stroke-width="3"/>
+        </g>
+        <path d="M200 200V16A184 184 0 0 1 384 200Z" fill="currentColor" opacity="0.18"/>
+        <text x="200" y="272" text-anchor="middle" font-size="210" font-weight="900" fill="currentColor" style="font-family: var(--font-display); font-stretch: 125%">3</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="half services" id="lo-que-hago">
+  <div class="inner">
+    <p class="mono">Lo que hago</p>
+    <div class="rows">
+      <a class="row" href="#pasion">
+        <h3>Satori Studio</h3>
+        <p>Foto y video con look de cine para tu negocio, tu evento o tu marca.</p>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="row" href="#web-design">
+        <h3>Web Design</h3>
+        <p>Páginas web con menú y pedidos por WhatsApp, para que te compren desde el celular.</p>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <div class="row soon">
+        <h3>Gestio</h3>
+        <span class="tag">Próximamente</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="band" id="quien-soy">
+  <div class="inner">
+    <p class="mono">Por qué conmigo</p>
+    <h2 style="margin-top: 16px; max-width: 20ch;">Tu negocio se ve mejor y vende más</h2>
+    <div class="about has-photo">
+      <figure class="portrait"><img src="img/eder.jpg" alt="Retrato de Eder Jaramillo" width="960" height="1200"><figcaption class="mono">Eder Jaramillo · Satori Studio</figcaption></figure>
+      <div class="stack">
+        <p class="lead">Grabo, diseño y programo. Así no tienes que coordinar a tres proveedores: me cuentas tu idea y yo te entrego el resultado.</p>
+        <p>Desde 2021 trabajo con hospitales, negocios locales, eventos y marcas personales. Cuido que todo se vea bien y, sobre todo, que sirva para atraer clientes.</p>
+        <p>Trabajas directo conmigo, sin intermediarios: desde la primera idea hasta el video, el diseño o la página terminados.</p>
+      </div>
+      <dl>
+        <div><dt>Todo en uno</dt><dd>Foto, video, diseño, redes y página web con una misma imagen, sin pelear con varios proveedores.</dd></div>
+        <div><dt>Look de cine</dt><dd>Luz, color y ritmo cuidados para que tu marca destaque frente a la competencia.</dd></div>
+        <div><dt>Trato directo</dt><dd>Hablas conmigo, sin intermediarios ni vueltas, y tu proyecto no se pierde en una fila.</dd></div>
+        <div><dt>Más rápido</dt><dd>Uso inteligencia artificial y automatización para avanzar rápido sin bajar la calidad.</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="band passion" id="pasion">
+  <div class="inner">
+    <p class="mono">Video que vende</p>
+    <p class="giant" aria-hidden="true">Video</p>
+    <div class="p-grid">
+      <h2 class="quote">En tres segundos, un video decide si te compran o siguen de largo.</h2>
+      <div class="stack">
+        <p class="lead">La gente mira antes de leer. Un buen video hace que tu negocio se recuerde, se comparta y se contrate.</p>
+        <p>Grabo y edito con color de cine en DaVinci Resolve para que tu marca se vea como la de una empresa grande, aunque apenas estés empezando.</p>
+      </div>
+    </div>
+    <!-- Cinta de fotogramas de ejemplo. Reemplaza cada <div> por una imagen tuya (<img>). -->
+    <div class="filmstrip" aria-hidden="true">
+      <div class="film">
+        <div class="film-g"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"></div>
+        <div class="film-g"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"></div>
+        <div class="film-g"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"></div>
+        <div class="film-g"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"><img src="img/frame-01.jpg" alt="" loading="lazy"><img src="img/frame-02.jpg" alt="" loading="lazy"><img src="img/frame-03.jpg" alt="" loading="lazy"><img src="img/frame-04.jpg" alt="" loading="lazy"><img src="img/frame-05.jpg" alt="" loading="lazy"><img src="img/frame-06.jpg" alt="" loading="lazy"><img src="img/frame-07.jpg" alt="" loading="lazy"></div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn more-btn" href="video.html#arriba">
+        <span>Saber más sobre mis videos</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="band social" id="redes">
+  <div class="inner">
+    <p class="mono">Redes sociales</p>
+    <h2 style="margin-top: 16px; max-width: 20ch;">Redes que atraen clientes, a precio accesible</h2>
+    <div class="stack" style="margin-top: 28px;">
+      <p class="lead">Si tu negocio no se ve bien en internet, el cliente se va con el que sí. Te ayudo a que te elijan a ti, sin pagar precios de agencia.</p>
+      <p>Me encargo de todo: fotos, videos, diseños y calendario. Tú te dedicas a vender y tus redes trabajan para ti.</p>
+    </div>
+    <ul class="checks">
+      <li><b>Publicaciones que llaman la atención</b><span>Diseños con tu identidad que se distinguen entre todo lo demás.</span></li>
+      <li><b>Foto y video propios</b><span>Contenido real de tu negocio, que da confianza y no parece de banco de imágenes.</span></li>
+      <li><b>Calendario sin estrés</b><span>Siempre sabes qué se publica y cuándo, sin que te quite tiempo.</span></li>
+      <li><b>Ideas para vender más</b><span>Promos y contenido pensados para que más gente de tu zona te escriba.</span></li>
+    </ul>
+    <p class="note">Hay planes para cada presupuesto. Escríbeme y cotiza sin compromiso.</p>
+    <div class="actions">
+      <a class="btn" href="#contacto">Quiero cotizar</a>
+    </div>
+  </div>
+</section>
+
+<section class="band web" id="web-design">
+  <div class="inner">
+    <p class="mono">Web Design</p>
+    <h2 style="margin-top: 16px; max-width: 20ch;">Una página que trabaja por ti todo el día</h2>
+    <div class="about">
+      <div class="stack">
+        <p class="lead">Tu negocio abierto las 24 horas: menú, pedidos por WhatsApp y toda tu información en un solo link.</p>
+        <p>Yo mismo diseño y programo, así tu página se ve bien, carga rápido y es fácil de usar desde el celular, que es desde donde te buscan.</p>
+        <p>Si necesitas algo más a la medida, como un dashboard, automatizaciones con IA o un punto de venta, también lo construyo.</p>
+        <ul class="tech" aria-label="Tecnologías">
+          <li>Desarrollo web</li><li>React Native</li><li>Python</li><li>C++</li><li>Automatización con IA</li>
+        </ul>
+      </div>
+      <dl>
+        <div><dt>Menú interactivo</dt><dd>Tus clientes ven tu menú y piden por WhatsApp. Pensado para negocios de Ameca y la zona Valles de Jalisco.</dd></div>
+        <div><dt>Punto de venta</dt><dd>Un POS de escritorio con tablet Android para llevar el control de tus ventas.</dd></div>
+        <div><dt>App móvil</dt><dd>También desarrollo apps móviles con React Native.</dd></div>
+      </dl>
+    </div>
+    <div class="actions">
+      <a class="btn" href="#contacto">Cotiza tu página</a>
+    </div>
+  </div>
+</section>
+
+<section class="band contact" id="contacto">
+  <div class="inner">
+    <p class="mono">Contacto</p>
+    <h2>Hablemos</h2>
+    <p class="lead">Cuéntame qué necesitas y te mando una propuesta clara, sin compromiso.</p>
+    <div class="actions">
+      <a class="btn on-hot" id="wa" href="https://wa.me/message/Q7Z2LERLV4WXB1" target="_blank" rel="noopener">Enviar mensaje por WhatsApp</a>
+      <a class="btn on-hot line" href="https://www.instagram.com/soyederjaramillo" target="_blank" rel="noopener">Instagram @soyederjaramillo</a>
+    </div>
+    <p class="mono" style="margin-top: 20px;">WhatsApp: <a href="https://wa.me/message/Q7Z2LERLV4WXB1" target="_blank" rel="noopener">wa.me/message/Q7Z2LERLV4WXB1</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="inner mono">
+    <span>Eder Jaramillo / Satori Studio</span>
+    <span>Ameca, Jalisco · México</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var dark = window.matchMedia("(prefers-color-scheme: dark)");
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  // Saludo según la hora
+  var h = new Date().getHours();
+  var saludo = h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches";
+  document.getElementById("saludo").textContent = saludo + " · bienvenido";
+
+  // Modo claro u oscuro
+  var modoTxt = document.getElementById("modo-txt");
+  function efectivo() { return root.getAttribute("data-theme") || (dark.matches ? "dark" : "light"); }
+  function pintarModo() { modoTxt.textContent = efectivo() === "dark" ? "Claro" : "Oscuro"; }
+  var t = get("ej-theme");
+  if (t === "dark" || t === "light") root.setAttribute("data-theme", t);
+  pintarModo();
+  dark.addEventListener && dark.addEventListener("change", pintarModo);
+  document.getElementById("modo").addEventListener("click", function () {
+    var n = efectivo() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", n); set("ej-theme", n); pintarModo();
+  });
+
+  // Altura del menú para el snap
+  var bar = document.querySelector(".topbar");
+  function medir() { root.style.setProperty("--hdr", bar.offsetHeight + "px"); }
+  medir();
+  if (window.ResizeObserver) new ResizeObserver(medir).observe(bar); else window.addEventListener("resize", medir);
+
+  // Sección activa en el menú
+  var ids = ["inicio", "quien-soy", "pasion", "redes", "web-design", "contacto"];
+  var links = {};
+  document.querySelectorAll(".menu a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+  var actual = null, pendiente = false;
+  function marcar() {
+    pendiente = false;
+    var alto = bar.offsetHeight;
+    var linea = alto + (window.innerHeight - alto) * 0.35;
+    var id = ids[0];
+    ids.forEach(function (k) {
+      var e = document.getElementById(k);
+      if (e && e.getBoundingClientRect().top <= linea) id = k;
+    });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) id = ids[ids.length - 1];
+    if (id === actual) return;
+    actual = id;
+    Object.keys(links).forEach(function (k) { links[k].removeAttribute("aria-current"); });
+    var l = links[id];
+    if (!l) return;
+    l.setAttribute("aria-current", "true");
+    var m = l.parentNode;
+    if (m.scrollWidth > m.clientWidth) { m.scrollLeft += l.getBoundingClientRect().left - m.getBoundingClientRect().left - 16; }
+  }
+  function pedir() { if (!pendiente) { pendiente = true; requestAnimationFrame(marcar); } }
+  window.addEventListener("scroll", pedir, { passive: true });
+  window.addEventListener("resize", pedir);
+  marcar();
+})();
+</script>

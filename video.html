@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Video · Eder Jaramillo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout concept: bandas de color a todo el ancho, como escenas de una película.
+   Naranja para abrir y cerrar (cuenta regresiva y contacto), papel para leer, tinta para el video.
+   Los tres proyectos van como un índice de filas grandes, no como tarjetas. */
+:root {
+  --paper: #ecefe9;
+  --ink: #0f1d1c;
+  --muted: #4a5f5c;
+  --soft: #dde3dc;
+  --rule: #b9c4be;
+  --teal: #0e5c5a;
+  --at-l: #c63d0a;
+  --at-d: #ff7a45;
+  --accent-text: var(--at-l);
+  --hot: #ff5a1f;
+  --hot-ink: #0f1d1c;
+  --hot-paper: #ecefe9;
+  --band: #0f1d1c;
+  --band-fg: #ecefe9;
+  --band-muted: #9db3b0;
+  --band-line: #2c4442;
+  --font-display: "Archivo", "Arial Black", Impact, sans-serif;
+  --font-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1615;
+    --ink: #ecefe9;
+    --muted: #9db3b0;
+    --soft: #14211f;
+    --rule: #2f4a47;
+    --teal: #4fc0b8;
+    --accent-text: var(--at-d);
+    --band: #050b0a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1615;
+  --ink: #ecefe9;
+  --muted: #9db3b0;
+  --soft: #14211f;
+  --rule: #2f4a47;
+  --teal: #4fc0b8;
+  --accent-text: var(--at-d);
+  --band: #050b0a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; }
+
+.band {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(56px, 10vw, 110px);
+}
+.inner { max-width: 1120px; margin: 0 auto; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+h2 { font-size: clamp(2rem, 6.4vw, 4rem); }
+h3 { font-size: 1.5rem; }
+p { margin: 0; max-width: 62ch; }
+.lead { font-size: clamp(1.1rem, 2.6vw, 1.32rem); }
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.stack { display: grid; gap: 20px; }
+
+.btn {
+  display: inline-block; text-decoration: none; font-weight: 700;
+  padding: 14px 22px; background: var(--ink); color: var(--paper);
+  border: 2px solid var(--ink);
+  transition: transform 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.line { background: transparent; color: inherit; border-color: currentColor; }
+.btn.on-hot { background: var(--hot-ink); color: var(--hot-paper); border-color: var(--hot-ink); }
+.btn.on-hot.line { background: transparent; color: var(--hot-ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+/* HERO */
+.hero { background: var(--hot); color: var(--hot-ink); padding-block: clamp(28px, 6vw, 64px) clamp(48px, 8vw, 96px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
+@media (min-width: 860px) { .hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 48px; } }
+.hero .mono { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.title-col { container-type: inline-size; min-width: 0; }
+.hero h1 {
+  font-size: min(11.5cqw, 7.6rem);
+  font-weight: 900; margin-top: 24px;
+  overflow-wrap: normal; text-wrap: nowrap;
+}
+.hero h1 span { display: block; white-space: nowrap; }
+.hero .lead { margin-top: 26px; max-width: 34ch; font-weight: 500; }
+.leader { width: min(380px, 78%); justify-self: center; color: var(--hot-ink); }
+@media (min-width: 860px) { .leader { width: 100%; justify-self: end; } }
+.leader svg { display: block; width: 100%; height: auto; }
+
+/* LO QUE HAGO */
+.rows {
+  margin-top: 28px; border-top: 3px solid var(--ink);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0;
+}
+.row {
+  display: grid; gap: 12px; align-content: start; min-width: 0;
+  padding: 24px 20px 28px 0; text-decoration: none; color: inherit;
+}
+.row + .row { border-left: 1px solid var(--rule); padding-left: 20px; }
+@media (max-width: 620px) {
+  .row + .row { border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; }
+}
+.row h3 { font-size: clamp(1.9rem, 4.4vw, 3rem); overflow-wrap: normal; }
+.row p { color: var(--muted); max-width: 52ch; }
+.row .arrow { font-family: var(--font-mono); font-size: 1.8rem; transition: transform 0.2s ease; }
+a.row:hover h3 { color: var(--accent-text); }
+a.row:hover .arrow { transform: translateX(6px); }
+.row.soon { cursor: default; }
+.row.soon h3 { color: var(--muted); }
+.tag {
+  grid-column: 1; justify-self: start; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 3px 8px; border: 1px dashed var(--teal); color: var(--teal);
+}
+
+/* QUIÉN SOY */
+.about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 36px; }
+@media (min-width: 820px) { .about { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; } }
+dl { margin: 0; display: grid; gap: 0; border-top: 3px solid var(--ink); align-self: start; }
+dl > div { padding: 16px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); gap: 4px 16px; }
+dt { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); padding-top: 3px; }
+dd { margin: 0; }
+@media (max-width: 520px) { dl > div { grid-template-columns: minmax(0, 1fr); } }
+
+/* PASIÓN */
+.passion { background: var(--band); color: var(--band-fg); }
+.passion .mono { color: var(--band-muted); }
+.giant {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 900; text-transform: uppercase;
+  font-size: clamp(4.6rem, 25vw, 17rem); line-height: 0.8; letter-spacing: -0.03em;
+  color: transparent; -webkit-text-stroke: 2px var(--hot); margin: 14px 0 0; overflow-wrap: anywhere;
+}
+.passion .quote {
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(1.5rem, 4.6vw, 2.5rem); line-height: 1.05; max-width: 24ch; margin-top: 40px; color: var(--hot);
+}
+.passion .stack { margin-top: 28px; }
+.reel {
+  margin-top: 48px; display: flex; gap: 10px; overflow-x: auto; padding-block: 26px; scrollbar-width: thin;
+  background:
+    repeating-linear-gradient(90deg, var(--band-line) 0 10px, transparent 10px 24px) top 8px left 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(90deg, var(--band-line) 0 10px, transparent 10px 24px) bottom 8px left 0 / 100% 8px no-repeat;
+}
+.reel div { flex: 0 0 150px; aspect-ratio: 4 / 5; }
+.credits { margin: 44px 0 0; padding: 0; border-top: 1px solid var(--band-line); }
+.credits li {
+  list-style: none; display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 4px 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--band-line); align-items: baseline;
+}
+.credits b { font-weight: 600; }
+.passion .btn { background: var(--band-fg); color: var(--band); border-color: var(--band-fg); }
+
+/* VENTA: VIDEO */
+.reasons { margin-top: 40px; display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+.reason { flex: 1 1 0; border-top: 3px solid var(--ink); padding-top: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.reason h3 { font-size: 1.3rem; overflow-wrap: normal; }
+.reason p { color: var(--muted); font-size: 0.97rem; }
+.step { color: var(--accent-text); }
+.next {
+  flex: 0 0 auto; align-self: center; font-family: var(--font-mono); font-size: 2rem; line-height: 1;
+  color: var(--accent-text); transform: rotate(90deg); padding: 4px 0;
+}
+@media (min-width: 900px) {
+  .reasons { flex-direction: row; align-items: flex-start; gap: 14px; }
+  .next { align-self: flex-start; transform: none; padding: 18px 0 0; }
+}
+
+/* VENTA: REDES */
+.social { background: var(--soft); }
+.checks { margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 40px; }
+.checks li { list-style: none; padding: 16px 0 16px 34px; border-bottom: 1px solid var(--rule); position: relative; }
+.checks li::before { content: ""; position: absolute; left: 0; top: 24px; width: 16px; height: 16px; background: var(--hot); }
+.checks b { display: block; }
+.checks span { color: var(--muted); font-size: 0.96rem; }
+.note { margin-top: 32px; padding: 20px 22px; border: 2px solid var(--ink); max-width: 62ch; font-weight: 500; }
+
+/* CONTACTO */
+.contact { background: var(--hot); color: var(--hot-ink); }
+.contact .inner { container-type: inline-size; }
+.contact h2 {
+  font-size: min(12cqw, 9rem); font-weight: 900; line-height: 0.9; margin-top: 16px;
+  white-space: nowrap; overflow-wrap: normal; text-wrap: nowrap;
+}
+
+/* WEB DESIGN */
+.web { background: var(--soft); }
+.web .about { margin-top: 36px; }
+.tech { margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.tech li {
+  list-style: none; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 12px; border: 1.5px solid var(--ink);
+}
+.web .btn { margin-top: 4px; justify-self: start; }
+.contact .lead { margin-top: 28px; max-width: 40ch; font-weight: 500; }
+
+footer {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px;
+}
+footer .inner { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; color: var(--muted); }
+
+
+
+/* Altura del menú fija, para que los enlaces no queden tapados */
+:root { --hdr: 97px; }
+@media (min-width: 900px) { :root { --hdr: 59px; } }
+html { scroll-padding-top: var(--hdr); }
+
+/* Menú superior */
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--paper);
+}
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.topbar-in {
+  max-width: 1120px; margin: 0 auto; padding-block: 10px;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; align-items: center;
+}
+.welcome { display: grid; min-width: 0; line-height: 1.2; }
+.welcome .mono { color: var(--muted); font-size: 0.7rem; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.welcome b { font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase; font-size: 1.05rem; overflow-wrap: normal; white-space: nowrap; }
+.menu {
+  grid-column: 1 / -1; grid-row: 2; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  margin-inline: -4px; padding-bottom: 2px;
+}
+.menu::-webkit-scrollbar { display: none; }
+.menu a {
+  flex: 0 0 auto; text-decoration: none; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 8px 10px; border-bottom: 3px solid transparent; color: var(--muted);
+}
+.menu a:hover { color: var(--ink); }
+.menu a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--hot); }
+.tools { display: flex; align-items: center; gap: 12px; grid-column: 2; grid-row: 1; }
+.mode {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; color: var(--ink); border: 1.5px solid var(--ink); padding: 6px 10px;
+}
+.mode svg { width: 14px; height: 14px; }
+.mode:hover { background: var(--ink); color: var(--paper); }
+@media (min-width: 900px) {
+  .topbar-in { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .menu { grid-column: 2; grid-row: 1; justify-content: center; margin: 0; padding: 0; }
+  .tools { grid-column: 3; }
+}
+@media (max-width: 420px) { .mode span { display: none; } }
+
+/* Sección de video: palabra más pequeña y texto en dos columnas alineadas */
+.giant { font-size: clamp(3.6rem, 15vw, 8.5rem); margin-top: 8px; }
+.passion p { max-width: none; }
+.p-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 0; align-items: start;
+  margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--band-line);
+}
+.p-grid .quote { margin-top: 0; max-width: none; line-height: 1.05; text-box: trim-start cap alphabetic; }
+.p-grid .stack { margin-top: 0; }
+.p-grid .stack > p:first-child { text-box: trim-start cap alphabetic; }
+@media (min-width: 860px) {
+  .p-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .p-grid .quote { padding-right: 48px; }
+  .p-grid .stack { border-left: 1px solid var(--band-line); padding-left: 48px; }
+}
+
+/* Primera pantalla dividida: portada arriba, proyectos abajo */
+.first { min-height: calc(100svh - var(--hdr)); display: flex; flex-direction: column; }
+.half {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.hero { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; padding-block: clamp(24px, 4vw, 48px); }
+.hero .inner { width: 100%; }
+.hero h1 { margin-top: 14px; }
+.hero .lead { margin-top: 16px; }
+.leader { width: auto; height: min(34svh, 300px); aspect-ratio: 1 / 1; justify-self: end; }
+.leader svg { width: 100%; height: 100%; }
+.services { flex: 0 0 auto; padding-block: 22px 26px; }
+.services .inner { width: 100%; }
+.services .rows { margin-top: 12px; }
+.services .row { padding-block: 16px 4px; gap: 8px; }
+@media (max-width: 859px) { .leader { display: none; } }
+@media (max-width: 620px) {
+  .services .row { padding-block: 12px 12px; gap: 4px; }
+  .services .row p { font-size: 0.92rem; }
+}
+
+/* Sección de video: todo cabe en una pantalla */
+.passion { padding-block: clamp(20px, 3.5svh, 40px); }
+.giant { font-size: clamp(3rem, min(12vw, 15svh), 8rem); margin-top: 4px; }
+.p-grid { margin-top: clamp(12px, 2.2svh, 24px); padding-top: clamp(12px, 2.2svh, 24px); }
+.p-grid .quote { font-size: clamp(1.25rem, min(3.4vw, 4svh), 2.1rem); }
+.p-grid .stack { gap: 14px; }
+.p-grid .lead { font-size: clamp(1rem, min(1.6vw, 2.5svh), 1.2rem); line-height: 1.5; }
+.p-grid .stack p:not(.lead) { font-size: clamp(0.88rem, 2svh, 1rem); line-height: 1.5; }
+.reel-row { display: block; margin-top: clamp(10px, 2svh, 22px); }
+.reel-row .reel { margin-top: 0; padding-block: 18px; }
+.reel-row .reel div { flex: 0 0 auto; height: clamp(80px, 14svh, 150px); aspect-ratio: 4 / 5; }
+.reel-row .actions { margin-top: clamp(8px, 1.6svh, 16px); }
+
+/* Video y "por qué tu negocio necesita video" en una sola sección */
+.why { margin-top: clamp(28px, 5svh, 56px); padding-top: clamp(24px, 4svh, 44px); border-top: 1px solid var(--band-line); }
+.passion .why .mono { color: var(--band-muted); }
+.passion .reason { border-top-color: var(--band-fg); }
+.passion .reason h3 { color: var(--band-fg); }
+.passion .reason p { color: var(--band-muted); }
+.passion .step, .passion .next { color: var(--hot); }
+
+/* Video: gancho corto y contenido que se despliega */
+.more-btn { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font: inherit; font-weight: 700; }
+.more-btn svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+.more-btn:hover svg { transform: translateX(4px); }
+.passion > .inner > .actions { margin-top: clamp(16px, 3svh, 28px); }
+.more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s ease; }
+.more.open { grid-template-rows: 1fr; }
+.more-in { min-height: 0; overflow: hidden; }
+.more-body { padding-top: clamp(28px, 5svh, 56px); display: grid; gap: clamp(32px, 6svh, 64px); }
+.blk { border-top: 1px solid var(--band-line); padding-top: clamp(20px, 3.5svh, 36px); display: grid; gap: 16px; align-content: start; }
+.blk h2 { font-size: clamp(1.6rem, 4.4vw, 2.8rem); }
+.blk > .mono { color: var(--band-muted); }
+.clips { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 8px; }
+.clip { margin: 0; min-width: 0; width: 100%; }
+.frame { position: relative; aspect-ratio: 16 / 9; width: 100%; }
+.play {
+  position: absolute; inset: 0; margin: auto; width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--band-fg); color: var(--band);
+}
+.play svg { width: 18px; height: 18px; margin-left: 2px; }
+.clip figcaption { display: grid; gap: 2px; padding-top: 10px; }
+.clip figcaption .mono { color: var(--band-muted); }
+.p-grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 56px; }
+.p-grid2 p { max-width: none; }
+@media (min-width: 860px) { .p-grid2 { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+.passion .checks li { border-bottom-color: var(--band-line); }
+.passion .checks span { color: var(--band-muted); }
+.passion .blk .actions { margin-top: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .more, .more-btn svg { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .row .arrow { transition: none; }
+}
+
+
+/* Página de video */
+.vhead { display: grid; gap: 16px; }
+.vhead .back { color: var(--band-muted); text-decoration: none; justify-self: start; }
+.vhead .back:hover { color: var(--band-fg); }
+.vhead h1 { font-size: clamp(2.4rem, 8vw, 5.5rem); font-weight: 900; color: var(--band-fg); overflow-wrap: normal; }
+.vhead h1 em { font-style: normal; color: var(--hot); }
+.vhead .lead { max-width: 56ch; color: var(--band-fg); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip {
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  padding: 8px 14px; background: transparent; color: var(--band-fg); border: 1.5px solid var(--band-line);
+}
+.chip:hover { border-color: var(--band-fg); }
+.chip[aria-pressed="true"] { background: var(--band-fg); color: var(--band); border-color: var(--band-fg); }
+.clips.wide { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px 16px; }
+.soon-frame {
+  display: grid; place-items: center; color: var(--band-muted);
+  background: repeating-linear-gradient(135deg, transparent 0 10px, var(--band-line) 10px 11px);
+  border: 1.5px dashed var(--band-line);
+}
+.clip[hidden] { display: none; }
+/* Secciones y reproductor */
+.vnav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.vnav .chip { text-decoration: none; }
+.vsec { display: grid; gap: 20px; padding-top: clamp(20px, 3.5svh, 36px); border-top: 1px solid var(--band-line); scroll-margin-top: calc(var(--hdr, 60px) + 16px); }
+.vsec:first-of-type { border-top: 0; }
+.vsec-h { display: grid; gap: 8px; }
+.vsec-h .mono { color: var(--band-muted); }
+.vsec-h h2 { font-size: clamp(1.5rem, 4vw, 2.4rem); }
+.vsec-d { color: var(--band-muted); max-width: 60ch; }
+button.clip { font: inherit; color: inherit; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; }
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.frame .play { z-index: 1; }
+a.clip:hover .play, button.clip:hover .play { background: var(--hot); color: #fff; }
+dialog#player { width: min(960px, 94vw); padding: 12px; border: 1px solid var(--band-line); background: var(--band); color: var(--band-fg); }
+dialog#player::backdrop { background: rgba(0,0,0,.8); }
+.pl-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 10px; }
+.pl-x { background: none; border: 1.5px solid var(--band-line); color: var(--band-fg); padding: 6px 12px; cursor: pointer; }
+dialog#player video { width: 100%; max-height: 78svh; background: #000; display: block; }
+
+
+.logos { background: var(--paper); }
+.logos .mono { color: var(--muted); }
+.marquee {
+  margin-top: 28px; overflow: hidden; border-block: 1px solid var(--rule);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.track { display: flex; width: max-content; animation: scroll 40s linear infinite; }
+.marquee:hover .track { animation-play-state: paused; }
+.group { display: flex; gap: 40px; padding: 28px 40px 28px 0; margin: 0; list-style: none; }
+.group li {
+  flex: 0 0 auto; min-width: 190px; height: 64px; display: grid; place-items: center; padding-inline: 20px;
+  border: 1.5px solid var(--rule); color: var(--muted);
+  font-family: var(--font-display); font-stretch: 125%; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; font-size: 1.05rem; white-space: nowrap;
+}
+.group li.lg { min-width: 0; padding: 0; height: 88px; width: 88px; overflow: hidden; border-radius: 50%; }
+.group li.lg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.group li small { display: block; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 400; letter-spacing: 0.1em; color: var(--muted); margin-top: 4px; }
+.group { align-items: center; }
+.group li:not(.lg) { height: 88px; }
+@keyframes scroll { to { transform: translateX(-25%); } }
+.clip { display: block; color: inherit; text-decoration: none; }
+.clip .cap { display: grid; gap: 2px; padding-top: 10px; }
+.clip .cap .mono { color: var(--band-muted); }
+.clip .play { transition: transform 0.2s ease; }
+.clip:hover .play, .clip:focus-visible .play { transform: scale(1.12); }
+.clip:hover .cap b { color: var(--hot); }
+.clip[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .track { animation: none; }
+  .marquee { overflow-x: auto; }
+}
+.vpage .blk:first-child { border-top: 0; padding-top: 0; }
+.vpage > .inner { display: grid; gap: clamp(32px, 6svh, 64px); }
+
+</style>
+</head>
+<body>
+<header class="topbar" id="arriba">
+  <div class="topbar-in">
+    <div class="welcome">
+      <span class="mono" id="saludo">Bienvenido</span>
+    </div>
+    <nav class="menu" aria-label="Secciones">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#quien-soy">Por qué yo</a>
+      <a href="video.html" aria-current="true">Video</a>
+      <a href="index.html#redes">Redes</a>
+      <a href="index.html#web-design">Web Design</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <div class="tools">
+      <button class="mode" id="modo" type="button" aria-label="Cambiar entre modo claro y oscuro">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.8A6.2 6.2 0 0 1 8 14.2Z" fill="currentColor"/></svg>
+        <span id="modo-txt">Oscuro</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="band passion vpage" id="galeria">
+  <div class="inner">
+    <div class="blk">
+      <div class="vhead">
+        <a class="back mono" href="index.html">← Volver al inicio</a>
+        <h1>Mi trabajo <em>en video</em></h1>
+        <p class="lead">Videos que hacen que tu empresa, tu evento o tu marca se vean tan profesionales como son. Mira lo que he hecho y imagina el tuyo.</p>
+      </div>
+      <nav class="vnav" aria-label="Secciones de la galería"><a class="chip" href="#corporativo">Corporativo</a><a class="chip" href="#animaciones">Animaciones</a><a class="chip" href="#grabacion">Solo grabación</a></nav>
+      <!-- Las tarjetas con imagen se reproducen aquí; las demás abren el video en Drive. -->
+      <div class="vsec" id="corporativo">
+        <div class="vsec-h"><p class="mono">01 · Corporativo</p><h2>Corporativo y eventos</h2><p class="vsec-d">Videos para empresas, hospitales y eventos de empresa, como la final en el Coliseo.</p></div>
+        <div class="clips wide">
+        <button class="clip" type="button" data-src="media/spot-carnaval.mp4" data-title="Spot Carnaval">
+          <div class="frame"><img src="img/poster-spot-carnaval.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Spot</span><b>Spot Carnaval</b></span>
+        </button>
+        <a class="clip" href="https://drive.google.com/file/d/1eoY8ovoMo8RwFchVqVJkzTRc5apmmnYi/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: linear-gradient(160deg,#ff5a1f,#0e5c5a);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Hospital San Gabriel Arcángel</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1Jyx9vJ3rkuc4-grPZRjs1rVQ-h0Xodwm/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: radial-gradient(circle at 70% 35%,#ffd9a8 0 9%,#ff5a1f 10% 36%,#0b2a2c 37%);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Checo · 1S</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1dPcZl3HAcY54aybFAuamDFJbYjcobwKT/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: linear-gradient(0deg,#0b2a2c 0 38%,#1f7f7a 38% 62%,#ff8a4c 62%);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Checo · 2S</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1pStEf3FeT9BwP5x0B1im05MAODcHso5-/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: linear-gradient(135deg,#ff8a4c,#0e5c5a 60%,#050b0a);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Checo · 3S</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1p34jGK74ifGLjezmRDqeQuinV_AWMFyS/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: radial-gradient(circle at 30% 62%,#4fc0b8 0 15%,transparent 16%),radial-gradient(circle at 70% 30%,#ff5a1f 0 19%,transparent 20%),#0b191b;"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Santa Fe</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1lKctn_cwibPdz2qHFEBL5zmnTEAPbOlK/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: radial-gradient(circle at 50% 110%,#ff5a1f 0 40%,#0e5c5a 41% 70%,#0b191b 71%);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Miguel · Conceptos Finos</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1aCLRIbkXkpuej1N7WdsqPxc_fpHOfg2u/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: linear-gradient(160deg,#ff5a1f,#0e5c5a);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Evento de empresa</span><b>Coliseo · Final</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/145aHXM1arY0TEpmRLfVp0Dwch5oDO1Sm/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: radial-gradient(circle at 70% 35%,#ffd9a8 0 9%,#ff5a1f 10% 36%,#0b2a2c 37%);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Evento de empresa</span><b>Coliseo 3</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1FOFzyOTrlVEwAyx8hd_cZVfqpPD249Tm/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: linear-gradient(0deg,#0b2a2c 0 38%,#1f7f7a 38% 62%,#ff8a4c 62%);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Evento de empresa</span><b>Intro Coliseo</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1fxDvNXV3Bk-HYlNbcRxEe4TGvVQDS0lK/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: linear-gradient(135deg,#ff8a4c,#0e5c5a 60%,#050b0a);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>TEC · Final 2</b></span>
+        </a>
+        <a class="clip" href="https://drive.google.com/file/d/1VOx8fHwqo_DWpw_3exrmjhdjQ1lRqjha/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: radial-gradient(circle at 30% 62%,#4fc0b8 0 15%,transparent 16%),radial-gradient(circle at 70% 30%,#ff5a1f 0 19%,transparent 20%),#0b191b;"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Corporativo</span><b>Video final</b></span>
+        </a>
+        </div>
+      </div>
+      <div class="vsec" id="animaciones">
+        <div class="vsec-h"><p class="mono">02 · Animaciones</p><h2>Animaciones</h2><p class="vsec-d">Logos animados e intros.</p></div>
+        <div class="clips wide">
+        <button class="clip" type="button" data-src="media/logo-instagram.mp4" data-title="Logo Instagram">
+          <div class="frame"><img src="img/poster-logo-instagram.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Logo animado</span><b>Logo Instagram</b></span>
+        </button>
+        <button class="clip" type="button" data-src="media/intro.mp4" data-title="Intro">
+          <div class="frame"><img src="img/poster-intro.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Intro</span><b>Intro</b></span>
+        </button>
+        </div>
+      </div>
+      <div class="vsec" id="grabacion">
+        <div class="vsec-h"><p class="mono">03 · Participación</p><h2>Videos que solo participé en su grabación</h2><p class="vsec-d">Aquí me encargué únicamente de la grabación; la edición fue de alguien más.</p></div>
+        <div class="clips wide">
+        <a class="clip" href="https://drive.google.com/file/d/14JZydKYGnXIraFBSb5d7H6p3quYGIwcS/view" target="_blank" rel="noopener">
+          <div class="frame" style="background: radial-gradient(circle at 50% 110%,#ff5a1f 0 40%,#0e5c5a 41% 70%,#0b191b 71%);"><span class="play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z" fill="currentColor"/></svg></span></div>
+          <span class="cap"><span class="mono">Solo grabación</span><b>Grabación · 2023</b></span>
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <p class="mono">La experiencia</p>
+      <h2>Grabar conmigo es fácil</h2>
+      <div class="p-grid2">
+        <p class="lead">No necesitas saber de cámaras ni de guiones. Te explico qué vamos a hacer, te digo dónde pararte y qué decir si hace falta, y tú te concentras en tu negocio o en tu evento.</p>
+        <p>Llego con equipo ligero, cuido la luz y el sonido, y busco que el día de grabación sea corto y sin estrés. Lo que se ve en pantalla tiene que sentirse natural, como tú.</p>
+      </div>
+    </div>
+
+    <div class="blk">
+      <p class="mono">Cómo trabajo</p>
+      <h2>Del primer mensaje al video final</h2>
+      <div class="reasons">
+        <div class="reason">
+          <span class="mono step">01</span>
+          <h3>Platicamos</h3>
+          <p>Me cuentas qué quieres comunicar, a quién y dónde lo vas a publicar.</p>
+        </div>
+        <span class="next" aria-hidden="true">→</span>
+        <div class="reason">
+          <span class="mono step">02</span>
+          <h3>Planeamos</h3>
+          <p>Definimos fecha, lugar y las tomas que necesitamos para aprovechar bien el día.</p>
+        </div>
+        <span class="next" aria-hidden="true">→</span>
+        <div class="reason">
+          <span class="mono step">03</span>
+          <h3>Grabamos</h3>
+          <p>Una sesión de foto y video de la que salen varias piezas.</p>
+        </div>
+        <span class="next" aria-hidden="true">→</span>
+        <div class="reason">
+          <span class="mono step">04</span>
+          <h3>Editamos y entregamos</h3>
+          <p>Edición y color en DaVinci Resolve, con versiones listas para tus redes y tu página.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <p class="mono">Por qué conmigo</p>
+      <h2>Por qué te conviene contratarme</h2>
+      <ul class="checks">
+        <li><b>Foto, video y diseño en un solo lugar</b><span>Una sola persona cuida la imagen de tu negocio, así todo se ve con el mismo estilo.</span></li>
+        <li><b>Look de cine, a tu medida</b><span>Cuido la luz, el color y el ritmo como en una producción grande, con planes pensados para negocios locales.</span></li>
+        <li><b>Trabajo cerca de ti</b><span>Estoy en Ameca y atiendo negocios y eventos de la región.</span></li>
+        <li><b>Material para todos tus canales</b><span>De una sola grabación salen videos para redes, para tu página web y para tu publicidad.</span></li>
+      </ul>
+      <div class="actions">
+        <a class="btn" href="index.html#contacto">Cuéntame qué quieres grabar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band logos" id="clientes">
+  <div class="inner">
+    <p class="mono">Han confiado en mí</p>
+    <h2 style="margin-top: 16px; max-width: 20ch;">Negocios y proyectos con los que he trabajado</h2>
+    <!-- Reemplaza cada nombre por el logo del cliente (imagen). -->
+    <div class="marquee" aria-label="Logos de clientes">
+      <div class="track">
+        <ul class="group"><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li></ul>
+        <ul class="group" aria-hidden="true"><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li></ul>
+        <ul class="group" aria-hidden="true"><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li></ul>
+        <ul class="group" aria-hidden="true"><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li><li class="lg"><img src="img/logo-hospital.jpg" alt="Hospital San Gabriel Arcángel" loading="lazy"></li><li><span>Checo Torres<small>Marca personal</small></span></li><li class="lg"><img src="img/logo-conceptos.jpg" alt="Conceptos Finos by Miguel Ángel Ramírez" loading="lazy"></li><li><span>Carnaval Ameca<small>Evento</small></span></li><li class="lg"><img src="img/logo-coliseo.jpg" alt="Coliseo" loading="lazy"></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="inner mono">
+    <span>Eder Jaramillo / Satori Studio</span>
+    <span>Ameca, Jalisco · México</span>
+  </div>
+</footer>
+
+<dialog id="player" aria-label="Reproductor de video">
+  <div class="pl-bar"><span class="mono pl-t"></span><button class="pl-x mono" type="button">Cerrar ✕</button></div>
+  <video controls playsinline preload="none"></video>
+</dialog>
+<script>
+(function () {
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+  function arriba() {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    document.body.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+  arriba();
+  window.addEventListener("load", arriba);
+  window.addEventListener("pageshow", arriba);
+  var root = document.documentElement;
+  var dark = window.matchMedia("(prefers-color-scheme: dark)");
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var h = new Date().getHours();
+  document.getElementById("saludo").textContent = (h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches") + " · bienvenido";
+  var modoTxt = document.getElementById("modo-txt");
+  function efectivo() { return root.getAttribute("data-theme") || (dark.matches ? "dark" : "light"); }
+  function pintar() { modoTxt.textContent = efectivo() === "dark" ? "Claro" : "Oscuro"; }
+  var t = get("ej-theme");
+  if (t === "dark" || t === "light") root.setAttribute("data-theme", t);
+  pintar();
+  if (dark.addEventListener) dark.addEventListener("change", pintar);
+  document.getElementById("modo").addEventListener("click", function () {
+    var n = efectivo() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", n); set("ej-theme", n); pintar();
+  });
+  var bar = document.querySelector(".topbar");
+  function medir() { root.style.setProperty("--hdr", bar.offsetHeight + "px"); }
+  medir();
+  if (window.ResizeObserver) new ResizeObserver(medir).observe(bar); else window.addEventListener("resize", medir);
+
+  // Reproductor
+  var dlg = document.getElementById("player"), vid = dlg.querySelector("video"), ttl = dlg.querySelector(".pl-t");
+  document.querySelectorAll("button.clip").forEach(function (b) {
+    b.addEventListener("click", function () {
+      vid.src = b.getAttribute("data-src"); ttl.textContent = b.getAttribute("data-title");
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+      vid.play().catch(function () {});
+    });
+  });
+  function cerrar() { vid.pause(); vid.removeAttribute("src"); vid.load(); if (dlg.close) dlg.close(); else dlg.removeAttribute("open"); }
+  dlg.querySelector(".pl-x").addEventListener("click", cerrar);
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) cerrar(); });
+  dlg.addEventListener("close", function () { vid.pause(); });
+})();
+</script>
+</body>
+</html>
