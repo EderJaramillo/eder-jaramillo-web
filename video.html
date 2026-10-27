@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<title>Video · Eder Jaramillo</title>
+<title>Mi trabajo en video · Eder Jaramillo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=DM+Mono:wght@400;500&display=swap">
@@ -278,6 +278,8 @@ body::before {
   margin-inline: -4px; padding-bottom: 2px;
 }
 .menu::-webkit-scrollbar { display: none; }
+.menu { min-width: 0; max-width: 100%; }
+.topbar-in > * { min-width: 0; }
 .menu a {
   flex: 0 0 auto; text-decoration: none; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
   padding: 8px 10px; border-bottom: 3px solid transparent; color: var(--muted);
@@ -418,6 +420,13 @@ body::before {
 }
 .clip[hidden] { display: none; }
 /* Secciones y reproductor */
+@media (max-width: 640px) {
+  .clips.wide { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; }
+  .clips.wide .play { width: 40px; height: 40px; }
+  .clips.wide .play svg { width: 14px; height: 14px; }
+  .clip .cap b { font-size: 0.86rem; line-height: 1.25; }
+  .clip .cap .mono { font-size: 0.62rem; letter-spacing: 0.06em; }
+}
 .vnav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .vnav .chip { text-decoration: none; }
 .vsec { display: grid; gap: 20px; padding-top: clamp(20px, 3.5svh, 36px); border-top: 1px solid var(--band-line); scroll-margin-top: calc(var(--hdr, 60px) + 16px); }
@@ -426,7 +435,7 @@ body::before {
 .vsec-h .mono { color: var(--band-muted); }
 .vsec-h h2 { font-size: clamp(1.5rem, 4vw, 2.4rem); }
 .vsec-d { color: var(--band-muted); max-width: 60ch; }
-button.clip { font: inherit; color: inherit; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; }
+button.clip { display: block; align-self: start; font: inherit; color: inherit; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; }
 .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .frame .play { z-index: 1; }
 a.clip:hover .play, button.clip:hover .play { background: var(--hot); color: #fff; }
